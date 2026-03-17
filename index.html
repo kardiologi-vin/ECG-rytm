@@ -2,22 +2,54 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <title>EKG Digitaliserare</title>
-    <link rel="stylesheet" href="style.css">
-    <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKG-Digitalisering med Pixel 10</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn-capture { background: #007bff; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; display: inline-block; margin-bottom: 20px; }
+        .btn-capture:hover { background: #0056b3; }
+        .canvas-container { display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 20px; }
+        canvas { max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px; border-radius: 4px; }
+        h3 { margin-bottom: 5px; color: #333; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>EKG Analys - Digitalisering</h2>
-        <input type="file" id="fileInput" accept="image/*">
-        
-        <div class="canvas-wrapper">
+
+<div class="container">
+    <h1>EKG-Digitalisering</h1>
+    <p>Tryck på knappen för att ta en bild av EKG-kurvan med din Pixel 10.</p>
+
+    <input type="file" id="ecgUpload" accept="image/*" capture="environment" style="display: none;">
+
+    <button onclick="document.getElementById('ecgUpload').click()" class="btn-capture">
+        📷 Ta EKG-bild med Pixel 10
+    </button>
+
+    <div id="status">Väntar på bild...</div>
+
+    <div class="canvas-container">
+        <div>
+            <h3>Originalbild</h3>
             <canvas id="canvasInput"></canvas>
+        </div>
+        <div>
+            <h3>Extraherad Signal</h3>
             <canvas id="canvasOutput"></canvas>
         </div>
-        
-        <div id="status">Väntar på bild...</div>
     </div>
-    <script src="processor.js"></script>
+</div>
+
+<script async src="https://docs.opencv.org/4.x/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+<script src="processor.js"></script>
+
+<script>
+    // Funktion som körs när OpenCV.js har laddats
+    function onOpenCvReady() {
+        document.getElementById('status').innerText = 'OpenCV.js är redo.';
+        initProcessor(); // Initiera logiken i processor.js
+    }
+</script>
+
 </body>
 </html>
